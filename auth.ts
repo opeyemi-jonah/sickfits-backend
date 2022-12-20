@@ -32,6 +32,7 @@ if (!sessionSecret && process.env.NODE_ENV !== 'production') {
 const { withAuth } = createAuth({
   listKey: 'User',
   identityField: 'email',
+  
 
   // this is a GraphQL query fragment for fetching what data will be attached to a context.session
   //   this can be helpful for when you are writing your access control functions
@@ -46,6 +47,7 @@ const { withAuth } = createAuth({
     //   you are asking the Keystone AdminUI to create a new user
     //   providing inputs for these fields
     fields: ['name', 'email', 'password'],
+    //TODO: Add in initial roles
 
     // it uses context.sudo() to do this, which bypasses any access control you might have
     //   you shouldn't use this in production
@@ -62,5 +64,6 @@ const session = statelessSessions({
   maxAge: sessionMaxAge,
   secret: sessionSecret!,
 });
+
 
 export { withAuth, session };

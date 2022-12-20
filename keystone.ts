@@ -1,14 +1,20 @@
 import { config } from '@keystone-6/core';
-import { lists } from './schema';
+import { lists } from './schemas/schema';
 import { withAuth, session } from './auth';
+import * as dotenv from 'dotenv'
+
+dotenv.config();
+
 
 export default withAuth(
   config({
     db: {
       provider: 'postgresql',
-      url: 'postgres://opeyemi:Password123!@localhost:5432/SickFits',
+      url: process.env.DATABASE_URL ?? '',
     },
     lists,
     session,
   })
 );
+
+console.log(process.env.DATABASE_URL)
