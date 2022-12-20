@@ -16,5 +16,3 @@ export default withAuth(
     session,
   })
 );
-
-console.log(process.env.DATABASE_URL)

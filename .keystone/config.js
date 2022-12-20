@@ -36,6 +36,11 @@ var import_core = require("@keystone-6/core");
 var import_access = require("@keystone-6/core/access");
 var import_fields = require("@keystone-6/core/fields");
 var User = (0, import_core.list)({
+  ui: {
+    isHidden: ({ session: session2 }) => {
+      return !session2.data;
+    }
+  },
   access: import_access.allowAll,
   fields: {
     name: (0, import_fields.text)({ validation: { isRequired: true } }),
@@ -59,17 +64,18 @@ var lists = {
 var import_crypto = require("crypto");
 var import_auth = require("@keystone-6/auth");
 var import_session = require("@keystone-6/core/session");
-var sessionSecret = process.env.SESSION_SECRET;
+var sessionSecret = process.env.COOKIE_SECRET;
 if (!sessionSecret && process.env.NODE_ENV !== "production") {
   sessionSecret = (0, import_crypto.randomBytes)(32).toString("hex");
 }
 var { withAuth } = (0, import_auth.createAuth)({
   listKey: "User",
   identityField: "email",
-  sessionData: "name createdAt",
+  sessionData: "id",
   secretField: "password",
   initFirstItem: {
-    fields: ["name", "email", "password"]
+    fields: ["name", "email", "password"],
+    itemData: { User: `id` }
   }
 });
 var sessionMaxAge = 60 * 60 * 24 * 30;
@@ -91,6 +97,5 @@ var keystone_default = withAuth(
     session
   })
 );
-console.log(process.env.DATABASE_URL);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {});
