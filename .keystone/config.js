@@ -29,7 +29,7 @@ __export(keystone_exports, {
   default: () => keystone_default
 });
 module.exports = __toCommonJS(keystone_exports);
-var import_core2 = require("@keystone-6/core");
+var import_core3 = require("@keystone-6/core");
 
 // schemas/User.ts
 var import_core = require("@keystone-6/core");
@@ -55,9 +55,42 @@ var User = (0, import_core.list)({
   }
 });
 
+// schemas/Product.ts
+var import_core2 = require("@keystone-6/core");
+var import_fields2 = require("@keystone-6/core/fields");
+var Product = (0, import_core2.list)({
+  access: {
+    operation: ({ session: session2 }) => {
+      return !!session2?.data;
+    }
+  },
+  fields: {
+    name: (0, import_fields2.text)({ validation: { isRequired: true } }),
+    description: (0, import_fields2.text)({
+      ui: {
+        displayMode: "textarea"
+      }
+    }),
+    status: (0, import_fields2.select)({
+      options: [
+        { label: "Draft", value: "DRAFT" },
+        { label: "Available", value: "AVAILABLE" },
+        { label: "Unavailable", value: "UNAVAILABLE" }
+      ],
+      defaultValue: "DRAFT",
+      ui: {
+        displayMode: "segmented-control",
+        createView: { fieldMode: "hidden" }
+      }
+    }),
+    price: (0, import_fields2.integer)()
+  }
+});
+
 // schemas/schema.ts
 var lists = {
-  User
+  User,
+  Product
 };
 
 // auth.ts
@@ -88,7 +121,7 @@ var session = (0, import_session.statelessSessions)({
 var dotenv = __toESM(require("dotenv"));
 dotenv.config();
 var keystone_default = withAuth(
-  (0, import_core2.config)({
+  (0, import_core3.config)({
     db: {
       provider: "postgresql",
       url: process.env.DATABASE_URL ?? ""
