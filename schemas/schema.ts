@@ -3,9 +3,9 @@
 
 import { User } from './User';
 import type { Lists } from '.keystone/types';
-import { session } from '../auth';
+import { Product } from './Product';
 
 export const lists: Lists = {
 User,
-
+Product,
 };
